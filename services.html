@@ -7,420 +7,140 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --rose: #c9a0a0;
-      --rose-light: #e8d0ce;
-      --rose-deep: #a07878;
-      --parchment: #f7f0e8;
-      --parchment-dark: #ede3d6;
-      --ink: #2c2420;
-      --ink-light: #5c4c46;
-      --gold: #c8a96e;
-      --gold-pale: #e8d8b8;
-      --cream: #faf6f0;
+      --rose: #c9a0a0; --rose-light: #e8d0ce; --rose-deep: #a07878;
+      --parchment: #f7f0e8; --parchment-dark: #ede3d6;
+      --ink: #2c2420; --ink-light: #5c4c46;
+      --gold: #c8a96e; --gold-pale: #e8d8b8; --cream: #faf6f0;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Jost', sans-serif;
-      background-color: var(--cream);
-      color: var(--ink);
-      overflow-x: hidden;
-    }
-
+    body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
     body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none; z-index: 0; opacity: 0.5;
     }
-
     nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100; padding: 1.5rem 4rem;
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(247,240,232,0.85);
-      backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(247,240,232,0.88); backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--rose-light);
     }
-
-    .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; font-weight: 500;
-      color: var(--ink); text-decoration: none; letter-spacing: 0.04em;
-    }
-
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-
-    .nav-links a {
-      font-size: 0.75rem; font-weight: 400;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--ink-light); text-decoration: none; transition: color 0.3s;
-    }
-
+    .nav-links a { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color .3s; }
     .nav-links a:hover, .nav-links a.active { color: var(--rose-deep); }
-
-    /* HERO */
     .hero {
-      min-height: 55vh;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 10rem 4rem 4rem;
-      background: linear-gradient(145deg, var(--gold-pale) 0%, var(--parchment) 40%, var(--cream) 100%);
+      min-height: 58vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 10rem 4rem 5rem;
+      background: linear-gradient(148deg, var(--gold-pale) 0%, var(--parchment) 45%, var(--cream) 100%);
       position: relative; overflow: hidden;
     }
-
     .hero-bg-text {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(6rem, 16vw, 18rem);
-      font-weight: 300; color: rgba(200, 169, 110, 0.07);
-      white-space: nowrap; pointer-events: none; user-select: none;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(7rem, 18vw, 20rem);
+      font-weight: 300; color: rgba(200,169,110,.07); white-space: nowrap; pointer-events: none; user-select: none;
     }
-
     .star { position: absolute; pointer-events: none; }
+    @keyframes sparkle { 0%,100%{opacity:.2;transform:scale(.8) rotate(0deg)} 50%{opacity:1;transform:scale(1.3) rotate(18deg)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    .hero-eyebrow { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--rose-deep); margin-bottom:1.2rem; opacity:0; animation:fadeUp .8s .2s forwards; }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3.5rem,7vw,6.5rem); font-weight:300; line-height:1.05; color:var(--ink); opacity:0; animation:fadeUp .9s .4s forwards; }
+    .hero-title em { font-style:italic; color:var(--rose-deep); }
+    .hero-sub { margin-top:1.5rem; font-size:1rem; font-weight:300; line-height:1.8; color:var(--ink-light); max-width:540px; opacity:0; animation:fadeUp .9s .65s forwards; }
+    main { position:relative; z-index:1; }
+    .fade-up { opacity:0; transform:translateY(32px); transition:opacity .75s ease,transform .75s ease; }
+    .fade-up.visible { opacity:1; transform:none; }
 
-    @keyframes sparkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.8) rotate(0deg); }
-      50%       { opacity: 1;   transform: scale(1.2) rotate(15deg); }
-    }
-
-    .hero-eyebrow {
-      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--rose-deep); margin-bottom: 1.2rem;
-      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
-    }
-
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.1;
-      color: var(--ink); opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
-    }
-
-    .hero-title em { font-style: italic; color: var(--rose-deep); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-up {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .fade-up.visible { opacity: 1; transform: none; }
-
-    main { position: relative; z-index: 1; }
-
-    /* INTRO STRIP */
-    .intro-strip {
-      padding: 5rem 4rem;
-      max-width: 720px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .intro-strip p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      font-weight: 300;
-      line-height: 1.6;
-      color: var(--ink-light);
-      font-style: italic;
-    }
-
-    .intro-strip p strong {
-      font-weight: 500;
-      color: var(--ink);
-      font-style: normal;
-    }
+    /* INTRO */
+    .intro { padding:7rem 4rem; max-width:800px; margin:0 auto; text-align:center; }
+    .intro p { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,2.5vw,1.75rem); font-weight:300; line-height:1.65; color:var(--ink-light); font-style:italic; }
+    .intro p strong { font-weight:500; color:var(--ink); font-style:normal; }
 
     /* SERVICES */
-    .services-section {
-      padding: 2rem 4rem 6rem;
+    .services { padding:2rem 4rem 7rem; }
+    .service-block { display:grid; grid-template-columns:1fr 2fr; gap:0; border-top:1px solid var(--rose-light); padding:5.5rem 0; align-items:start; }
+    .service-block:last-child { border-bottom:1px solid var(--rose-light); }
+    .service-left { padding-right:4rem; position:sticky; top:8rem; }
+    .service-num { font-family:'Cormorant Garamond',serif; font-size:5rem; font-weight:300; color:var(--rose-light); line-height:1; margin-bottom:1.5rem; }
+    .service-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:400; color:var(--ink); line-height:1.2; margin-bottom:1rem; }
+    .service-title em { font-style:italic; color:var(--rose-deep); }
+    .service-tagline { font-size:.88rem; line-height:1.75; color:var(--ink-light); font-weight:300; margin-bottom:2rem; }
+    .service-cta { display:inline-block; padding:.8rem 2rem; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; border:1px solid var(--rose-deep); color:var(--rose-deep); transition:background .3s,color .3s; }
+    .service-cta:hover { background:var(--rose-deep); color:var(--parchment); }
+    .service-right { padding-left:4rem; border-left:1px solid var(--rose-light); }
+    .service-desc { font-size:1rem; line-height:1.9; color:var(--ink-light); font-weight:300; margin-bottom:2.5rem; }
+    .service-desc strong { color:var(--ink); font-weight:500; }
+    .service-desc em { font-style:italic; color:var(--rose-deep); }
+    .includes-label { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose-deep); margin-bottom:1.2rem; }
+    .includes-list { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:.7rem; margin-bottom:2.5rem; }
+    .includes-list li { font-size:.88rem; line-height:1.65; color:var(--ink-light); font-weight:300; display:flex; align-items:baseline; gap:.6rem; }
+    .includes-list li::before { content:'✦'; font-size:.5rem; color:var(--rose); flex-shrink:0; }
+    .pricing-signal { display:inline-block; padding:1.2rem 2rem; background:var(--parchment-dark); border-left:3px solid var(--rose-deep); }
+    .price-label { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose-deep); margin-bottom:.4rem; }
+    .price-value { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400; color:var(--ink); }
+    .price-note { font-size:.75rem; color:var(--ink-light); font-weight:300; margin-top:.3rem; }
+
+    /* WHY */
+    .why { background:var(--ink); padding:8rem 4rem; position:relative; overflow:hidden; }
+    .why::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 25% 80%,rgba(196,92,58,.08) 0%,transparent 60%),radial-gradient(ellipse at 75% 20%,rgba(201,160,160,.06) 0%,transparent 60%); pointer-events:none; }
+    .why-inner { max-width:1200px; margin:0 auto; position:relative; z-index:1; }
+    .why-label { font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; color:var(--rose); margin-bottom:1.5rem; }
+    .why-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:300; color:var(--parchment); line-height:1.2; margin-bottom:4rem; }
+    .why-title em { font-style:italic; color:var(--rose); }
+    .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3.5rem; }
+    .why-item h3 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400; color:var(--parchment); margin-bottom:.8rem; }
+    .why-item p { font-size:.88rem; line-height:1.85; color:rgba(247,240,232,.5); font-weight:300; }
+
+    /* PROCESS */
+    .process { padding:7rem 4rem; max-width:1200px; margin:0 auto; }
+    .process-header { display:flex; align-items:baseline; gap:2rem; margin-bottom:4rem; }
+    .process-header h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; }
+    .process-header h2 em { font-style:italic; color:var(--rose-deep); }
+    .process-header .divider { flex:1; height:1px; background:var(--rose-light); }
+    .process-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rose-light); }
+    .process-step { background:var(--cream); padding:2.5rem 2rem; }
+    .step-num { font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--rose-light); line-height:1; margin-bottom:1rem; }
+    .step-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--ink); margin-bottom:.6rem; }
+    .step-desc { font-size:.82rem; line-height:1.75; color:var(--ink-light); font-weight:300; }
+
+    .cta-strip { padding:7rem 4rem; text-align:center; background:linear-gradient(160deg,var(--rose-light) 0%,var(--parchment) 60%,var(--cream) 100%); }
+    .cta-strip h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4.5vw,3.5rem); font-weight:300; color:var(--ink); margin-bottom:1rem; line-height:1.2; }
+    .cta-strip h2 em { font-style:italic; color:var(--rose-deep); }
+    .cta-strip p { font-size:1rem; color:var(--ink-light); font-weight:300; margin-bottom:2.5rem; line-height:1.7; }
+    .btn { display:inline-block; padding:1rem 2.8rem; font-family:'Jost',sans-serif; font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); color:var(--ink); background:transparent; transition:background .3s,color .3s; cursor:pointer; margin:.4rem; }
+    .btn:hover { background:var(--ink); color:var(--parchment); }
+    .btn-rose { border-color:var(--rose-deep); color:var(--rose-deep); }
+    .btn-rose:hover { background:var(--rose-deep); color:var(--parchment); }
+    footer { background:var(--ink); padding:3rem 4rem; display:flex; justify-content:space-between; align-items:center; }
+    footer .logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--parchment); }
+    footer p { font-size:.72rem; letter-spacing:.1em; color:rgba(247,240,232,.35); }
+    footer .footer-links { display:flex; gap:2rem; list-style:none; }
+    footer .footer-links a { font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(247,240,232,.45); text-decoration:none; transition:color .3s; }
+    footer .footer-links a:hover { color:var(--rose); }
+    @media(max-width:900px){
+      nav{padding:1.2rem 2rem;} .hero{padding:8rem 2rem 4rem;} .intro{padding:5rem 2rem;}
+      .services{padding:2rem 2rem 5rem;}
+      .service-block{grid-template-columns:1fr;gap:2.5rem;padding:3.5rem 0;}
+      .service-left{position:static;padding-right:0;}
+      .service-right{padding-left:0;border-left:none;border-top:1px solid var(--rose-light);padding-top:2.5rem;}
+      .includes-list{grid-template-columns:1fr;}
+      .why{padding:5rem 2rem;} .why-grid{grid-template-columns:1fr;gap:2.5rem;}
+      .process{padding:5rem 2rem;} .process-steps{grid-template-columns:1fr 1fr;}
+      .cta-strip{padding:5rem 2rem;}
+      footer{flex-direction:column;gap:1.5rem;text-align:center;padding:2.5rem 2rem;}
     }
-
-    .service-block {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 0;
-      border-top: 1px solid var(--rose-light);
-      padding: 5rem 0;
-      align-items: start;
-      transition: background 0.3s;
-    }
-
-    .service-block:last-child { border-bottom: 1px solid var(--rose-light); }
-
-    .service-left {
-      padding-right: 4rem;
-      position: sticky;
-      top: 8rem;
-    }
-
-    .service-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 5rem; font-weight: 300;
-      color: var(--rose-light);
-      line-height: 1;
-      margin-bottom: 1.5rem;
-    }
-
-    .service-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem; font-weight: 400;
-      color: var(--ink); margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-
-    .service-title em { font-style: italic; color: var(--rose-deep); }
-
-    .service-tagline {
-      font-size: 0.85rem; line-height: 1.75;
-      color: var(--ink-light); font-weight: 300;
-      margin-bottom: 2rem;
-    }
-
-    .service-cta {
-      display: inline-block;
-      padding: 0.8rem 2rem;
-      font-size: 0.72rem; letter-spacing: 0.18em;
-      text-transform: uppercase; text-decoration: none;
-      border: 1px solid var(--rose-deep); color: var(--rose-deep);
-      background: transparent;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    .service-cta:hover { background: var(--rose-deep); color: var(--parchment); }
-
-    .service-right { padding-left: 4rem; border-left: 1px solid var(--rose-light); }
-
-    .service-description {
-      font-size: 1rem; line-height: 1.85;
-      color: var(--ink-light); font-weight: 300;
-      margin-bottom: 2.5rem;
-    }
-
-    .includes-label {
-      font-size: 0.7rem; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--rose-deep);
-      margin-bottom: 1.2rem;
-    }
-
-    .includes-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .includes-list li {
-      font-size: 0.88rem; line-height: 1.6;
-      color: var(--ink-light); font-weight: 300;
-      display: flex; align-items: baseline; gap: 0.6rem;
-    }
-
-    .includes-list li::before {
-      content: '✦';
-      font-size: 0.5rem;
-      color: var(--rose);
-      flex-shrink: 0;
-    }
-
-    /* PRICING SIGNAL */
-    .pricing-signal {
-      display: inline-block;
-      padding: 1.2rem 2rem;
-      background: var(--parchment-dark);
-      border-left: 3px solid var(--rose-deep);
-    }
-
-    .pricing-signal .price-label {
-      font-size: 0.65rem; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--rose-deep);
-      margin-bottom: 0.4rem;
-    }
-
-    .pricing-signal .price-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem; font-weight: 400; color: var(--ink);
-    }
-
-    .pricing-signal .price-note {
-      font-size: 0.75rem; color: var(--ink-light);
-      font-weight: 300; margin-top: 0.3rem;
-    }
-
-    /* WHY ME */
-    .why-section {
-      background: var(--ink);
-      padding: 7rem 4rem;
-    }
-
-    .why-inner { max-width: 1200px; margin: 0 auto; }
-
-    .why-label {
-      font-size: 0.72rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--rose);
-      margin-bottom: 1rem;
-    }
-
-    .why-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 300; color: var(--parchment);
-      margin-bottom: 4rem; line-height: 1.2;
-    }
-
-    .why-title em { font-style: italic; color: var(--rose); }
-
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3rem;
-    }
-
-    .why-item h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; font-weight: 400;
-      color: var(--parchment); margin-bottom: 0.8rem;
-    }
-
-    .why-item p {
-      font-size: 0.88rem; line-height: 1.8;
-      color: rgba(247,240,232,0.5); font-weight: 300;
-    }
-
-    /* HOW IT WORKS */
-    .process-section {
-      padding: 7rem 4rem;
-      max-width: 1200px; margin: 0 auto;
-    }
-
-    .process-header {
-      display: flex; align-items: baseline; gap: 2rem;
-      margin-bottom: 4rem;
-    }
-
-    .process-header h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300;
-    }
-
-    .process-header .divider { flex: 1; height: 1px; background: var(--rose-light); }
-
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0; background: var(--rose-light);
-    }
-
-    .process-step {
-      background: var(--cream);
-      padding: 2.5rem 2rem;
-    }
-
-    .step-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem; font-weight: 300; color: var(--rose-light);
-      line-height: 1; margin-bottom: 1rem;
-    }
-
-    .step-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-weight: 400;
-      color: var(--ink); margin-bottom: 0.6rem;
-    }
-
-    .step-desc {
-      font-size: 0.82rem; line-height: 1.7;
-      color: var(--ink-light); font-weight: 300;
-    }
-
-    /* CTA */
-    .cta-strip {
-      background: linear-gradient(135deg, var(--rose-light), var(--parchment));
-      padding: 6rem 4rem; text-align: center;
-    }
-
-    .cta-strip h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
-      color: var(--ink); margin-bottom: 1rem;
-    }
-
-    .cta-strip h2 em { font-style: italic; color: var(--rose-deep); }
-
-    .cta-strip p {
-      font-size: 0.95rem; color: var(--ink-light);
-      margin-bottom: 2.5rem; font-weight: 300;
-    }
-
-    .btn {
-      display: inline-block; padding: 1rem 2.8rem;
-      font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 400;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid var(--ink);
-      color: var(--ink); background: transparent;
-      transition: background 0.3s, color 0.3s; cursor: pointer;
-    }
-
-    .btn:hover { background: var(--ink); color: var(--parchment); }
-
-    footer {
-      background: var(--ink); padding: 3rem 4rem;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-
-    footer .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-weight: 400; color: var(--parchment);
-    }
-
-    footer p { font-size: 0.72rem; letter-spacing: 0.12em; color: rgba(247,240,232,0.35); }
-
-    footer .footer-links { display: flex; gap: 2rem; list-style: none; }
-
-    footer .footer-links a {
-      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(247,240,232,0.45); text-decoration: none; transition: color 0.3s;
-    }
-
-    footer .footer-links a:hover { color: var(--rose); }
-
-    @media (max-width: 900px) {
-      nav { padding: 1.2rem 2rem; }
-      .hero { padding: 8rem 2rem 3rem; }
-      .services-section { padding: 2rem 2rem 4rem; }
-      .service-block { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 0; }
-      .service-left { position: static; padding-right: 0; }
-      .service-right { padding-left: 0; border-left: none; border-top: 1px solid var(--rose-light); padding-top: 2.5rem; }
-      .includes-list { grid-template-columns: 1fr; }
-      .why-section { padding: 5rem 2rem; }
-      .why-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .process-section { padding: 4rem 2rem; }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .cta-strip { padding: 4rem 2rem; }
-      footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2.5rem 2rem; }
-    }
-
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      .process-steps { grid-template-columns: 1fr; }
-    }
+    @media(max-width:600px){ .nav-links{display:none;} .process-steps{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
-
   <nav>
     <a href="index.html" class="nav-logo">Hilly Wayenbam</a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="books.html">Books</a></li>
       <li><a href="services.html" class="active">Services</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -428,47 +148,33 @@
 
   <section class="hero">
     <div class="hero-bg-text">Services</div>
-    <div class="star" style="top:22%;right:15%;animation:sparkle 3.4s infinite;">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c8a96e" opacity="0.5"/></svg>
-    </div>
-    <div class="star" style="top:60%;left:8%;animation:sparkle 2.6s 1s infinite;">
-      <svg width="11" height="11" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c9a0a0" opacity="0.5"/></svg>
-    </div>
+    <div class="star" style="top:22%;right:14%;animation:sparkle 3.4s infinite;"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c8a96e" opacity="0.5"/></svg></div>
+    <div class="star" style="top:58%;left:8%;animation:sparkle 2.6s 1s infinite;"><svg width="11" height="11" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c9a0a0" opacity="0.5"/></svg></div>
     <p class="hero-eyebrow">What Hilly offers</p>
-    <h1 class="hero-title">The right words, <em>delivered.</em></h1>
+    <h1 class="hero-title">The words. The strategy.<br>The <em>whole story.</em></h1>
+    <p class="hero-sub">She does not just fill a content calendar. She makes sure every single thing on it is worth the reader's time.</p>
   </section>
 
   <main>
-
-    <!-- INTRO -->
-    <div class="intro-strip fade-up">
-      <p>
-        <!-- PLACEHOLDER — Hilly to write this in her voice -->
-        Hilly works with brands and publications who know that <strong>great content is never accidental.</strong>
-        It starts with understanding your audience, your voice, and what you actually want readers to do next.
-      </p>
+    <div class="intro">
+      <p class="fade-up">Most clients come to Hilly looking for a writer. They leave with <strong>a brand that finally sounds like itself.</strong> That is not a coincidence. That is what happens when the person writing your content has also spent years building entire fictional worlds from scratch.</p>
     </div>
 
-    <!-- SERVICES -->
-    <section class="services-section">
+    <section class="services">
 
-      <!-- SERVICE 01 -->
-      <div class="service-block fade-up">
-        <div class="service-left">
-          <div class="service-number">01</div>
+      <div class="service-block">
+        <div class="service-left fade-up">
+          <div class="service-num">01</div>
           <h2 class="service-title">Blog Writing &amp;<br><em>Long-Form Content</em></h2>
-          <p class="service-tagline">Researched, well-structured articles that rank and read beautifully.</p>
-          <a href="contact.html" class="service-cta">Enquire →</a>
+          <p class="service-tagline">The kind of article that ranks and still feels like it was written by an actual human being.</p>
+          <a href="contact.html" class="service-cta">Enquire</a>
         </div>
-        <div class="service-right">
-          <p class="service-description">
-            <!-- PLACEHOLDER — rewrite in Hilly's voice -->
-            You need content that does two things at once: earn the trust of search engines and earn the attention of real people.
-            Hilly writes long-form articles, blog posts, and editorial features for health &amp; wellness brands, lifestyle platforms, and travel publications — with a focus on genuine storytelling, not keyword stuffing.
-          </p>
-          <p class="includes-label">What's included</p>
+        <div class="service-right fade-up">
+          <p class="service-desc">A lot of blog content reads like it is doing a favour for a search engine and a disservice to the person who clicked. Hilly writes the other kind. <strong>The kind that opens like a good chapter.</strong> That builds trust paragraph by paragraph. That gives readers something useful and still leaves them wanting to stay a little longer.</p>
+          <p class="service-desc">She covers health and wellness, lifestyle and culture, and travel. Not because these are random categories but because they are all fundamentally about one thing: <em>how people live and what makes them feel more alive.</em> She understands these audiences the way a novelist understands her characters. From the inside.</p>
+          <p class="includes-label">What is included</p>
           <ul class="includes-list">
-            <li>Topic research &amp; angle ideation</li>
+            <li>Topic research and angle ideation</li>
             <li>SEO keyword integration</li>
             <li>Original, plagiarism-free copy</li>
             <li>One round of revisions</li>
@@ -477,136 +183,123 @@
           </ul>
           <div class="pricing-signal">
             <div class="price-label">Starting from</div>
-            <div class="price-value"><!-- Add your rate --> ₹ / $ per article</div>
-            <div class="price-note">Final pricing based on length &amp; complexity</div>
+            <div class="price-value">Add your rate here</div>
+            <div class="price-note">Final pricing based on length and complexity</div>
           </div>
         </div>
       </div>
 
-      <!-- SERVICE 02 -->
-      <div class="service-block fade-up">
-        <div class="service-left">
-          <div class="service-number">02</div>
+      <div class="service-block">
+        <div class="service-left fade-up">
+          <div class="service-num">02</div>
           <h2 class="service-title">Content Editing<br>&amp; <em>QA</em></h2>
-          <p class="service-tagline">Polish that protects your brand's voice — and its reputation.</p>
-          <a href="contact.html" class="service-cta">Enquire →</a>
+          <p class="service-tagline">She reads your content like she loves it and still catches everything that does not belong there.</p>
+          <a href="contact.html" class="service-cta">Enquire</a>
         </div>
-        <div class="service-right">
-          <p class="service-description">
-            <!-- PLACEHOLDER — rewrite in Hilly's voice -->
-            Editing is where Hilly's years of quality assurance work become your advantage.
-            She reads closely — for consistency, clarity, tone, factual accuracy, and the subtle things that make a reader pause and lose trust.
-            Whether you need a single piece reviewed or a full content audit, she brings the same rigour to every word.
-          </p>
-          <p class="includes-label">What's included</p>
+        <div class="service-right fade-up">
+          <p class="service-desc">Editing is not about fixing mistakes. It is about making sure every piece does exactly what it promised to do when the reader clicked on it. Hilly brings years of quality assurance discipline to this work. She is thorough in the way that only someone who has also written everything from scratch can be. <strong>She knows exactly what it costs to produce a piece, so she does not waste a single word of it.</strong></p>
+          <p class="service-desc">She checks structure, tone, clarity, factual accuracy, consistency of voice, and all the small things that quietly erode trust when they go wrong. She delivers tracked changes with clear notes. <em>You will understand every edit and feel good about it.</em></p>
+          <p class="includes-label">What is included</p>
           <ul class="includes-list">
-            <li>Structural &amp; line editing</li>
-            <li>Tone &amp; voice consistency</li>
-            <li>Fact &amp; link checking</li>
-            <li>Grammar &amp; style cleanup</li>
+            <li>Structural and line editing</li>
+            <li>Tone and voice consistency</li>
+            <li>Fact and link checking</li>
+            <li>Grammar and style cleanup</li>
             <li>Track-changes delivery</li>
-            <li>Editor's notes on key changes</li>
+            <li>Editor notes on key changes</li>
           </ul>
           <div class="pricing-signal">
             <div class="price-label">Starting from</div>
-            <div class="price-value"><!-- Add your rate --> ₹ / $ per piece</div>
-            <div class="price-note">Volume discounts for ongoing editorial work</div>
+            <div class="price-value">Add your rate here</div>
+            <div class="price-note">Volume discounts available for ongoing editorial work</div>
           </div>
         </div>
       </div>
 
-      <!-- SERVICE 03 -->
-      <div class="service-block fade-up">
-        <div class="service-left">
-          <div class="service-number">03</div>
+      <div class="service-block">
+        <div class="service-left fade-up">
+          <div class="service-num">03</div>
           <h2 class="service-title">Content Strategy<br>&amp; <em>Retainer</em></h2>
-          <p class="service-tagline">A committed content partner — not just a one-off hire.</p>
-          <a href="contact.html" class="service-cta">Enquire →</a>
+          <p class="service-tagline">A content partner who thinks about your brand the way a novelist thinks about her world.</p>
+          <a href="contact.html" class="service-cta">Enquire</a>
         </div>
-        <div class="service-right">
-          <p class="service-description">
-            <!-- PLACEHOLDER — rewrite in Hilly's voice -->
-            For brands that want consistent, high-quality content over time, Hilly offers monthly retainer packages.
-            She becomes embedded in your editorial calendar — writing, editing, strategising, and making sure every piece serves the larger content goals of the brand.
-          </p>
-          <p class="includes-label">What's included</p>
+        <div class="service-right fade-up">
+          <p class="service-desc">The best fictional worlds are consistent. Every detail earns its place. Every character serves the story. Hilly builds content strategies the same way. She becomes someone who genuinely understands your brand, your audience, and the story your content needs to tell month after month.</p>
+          <p class="service-desc"><strong>This is not content production on autopilot.</strong> This is a real partnership. She is in your editorial calendar. She is thinking about what comes next. She is making sure that every piece, taken together, builds something your audience actually recognises and comes back to. <em>Because the best brands do not just publish content. They build worlds.</em></p>
+          <p class="includes-label">What is included</p>
           <ul class="includes-list">
             <li>Monthly content calendar</li>
-            <li>Agreed volume of articles / edits</li>
+            <li>Agreed volume of articles or edits</li>
             <li>Brand voice documentation</li>
             <li>Priority turnaround</li>
             <li>Monthly strategy check-in</li>
-            <li>Performance notes &amp; feedback</li>
+            <li>Performance notes and feedback</li>
           </ul>
           <div class="pricing-signal">
             <div class="price-label">Starting from</div>
-            <div class="price-value"><!-- Add your rate --> ₹ / $ per month</div>
-            <div class="price-note">Custom packages available — let's talk</div>
+            <div class="price-value">Add your rate here</div>
+            <div class="price-note">Custom packages available. Let us talk.</div>
           </div>
         </div>
       </div>
-
     </section>
 
-    <!-- WHY HILLY -->
-    <section class="why-section">
+    <section class="why">
       <div class="why-inner">
-        <p class="why-label fade-up">Why work with Hilly</p>
-        <h2 class="why-title fade-up">The difference is in<br><em>how she thinks.</em></h2>
+        <p class="why-label fade-up">Why Hilly</p>
+        <h2 class="why-title fade-up">The difference is not just what she writes.<br><em>It is how she thinks before she starts.</em></h2>
         <div class="why-grid">
           <div class="why-item fade-up">
-            <h3>She knows your reader.</h3>
-            <p>Years writing across health, lifestyle, and travel means Hilly understands what these audiences want to feel — not just what they want to know.</p>
+            <h3>She has lived inside stories her whole life.</h3>
+            <p>Writing novels teaches you things about audience, pacing, and emotional logic that no content course can. When Hilly sits down to write your brand content, she brings that understanding with her. Your reader is not a statistic to her. They are a character she is already writing for.</p>
           </div>
           <div class="why-item fade-up">
-            <h3>She edits like it matters.</h3>
-            <p>Her QA background means she does not let things slide. Every piece she touches is tighter, cleaner, and more trustworthy than when it arrived.</p>
+            <h3>She edits the way she loves things.</h3>
+            <p>Carefully. With full attention. She does not skim a piece and call it reviewed. She sits with it. She asks what it is trying to do and whether it is actually doing it. Years of quality assurance work taught her to catch what most people let slip through.</p>
           </div>
           <div class="why-item fade-up">
-            <h3>She meets deadlines.</h3>
-            <p><!-- PLACEHOLDER — add a real line about her work style here --> Reliable, communicative, and organised. No chasing, no excuses, no nasty surprises.</p>
+            <h3>She shows up and she delivers.</h3>
+            <p>No chasing. No guessing games about where your piece is. No surprises in the final draft. She communicates clearly, meets deadlines, and treats your brief with the same seriousness she gives her own manuscripts. Which is to say, a great deal of seriousness.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROCESS -->
-    <section class="process-section">
+    <section class="process">
       <div class="process-header">
-        <h2 class="fade-up">How it works</h2>
+        <h2 class="fade-up">How it <em>works</em></h2>
         <div class="divider"></div>
       </div>
       <div class="process-steps">
         <div class="process-step fade-up">
           <div class="step-num">01</div>
           <div class="step-title">You reach out</div>
-          <p class="step-desc">Drop a message via the contact form with your brief, timeline, and budget signal.</p>
+          <p class="step-desc">Send a message through the contact page. Tell her what you are working on, what you need, and roughly what your timeline looks like.</p>
         </div>
         <div class="process-step fade-up">
           <div class="step-num">02</div>
-          <div class="step-title">Discovery call</div>
-          <p class="step-desc">A short conversation to understand your goals, audience, and what success looks like.</p>
+          <div class="step-title">You talk</div>
+          <p class="step-desc">A short conversation to understand your goals, your audience, and what success actually looks like for this project. She listens before she writes.</p>
         </div>
         <div class="process-step fade-up">
           <div class="step-num">03</div>
-          <div class="step-title">Proposal &amp; agreement</div>
-          <p class="step-desc">Hilly sends a clear scope, timeline, and pricing. No surprises after you sign.</p>
+          <div class="step-title">She proposes</div>
+          <p class="step-desc">A clear scope, a timeline, and honest pricing. Everything written down before anyone starts. No surprises after you sign.</p>
         </div>
         <div class="process-step fade-up">
           <div class="step-num">04</div>
-          <div class="step-title">Content delivered</div>
-          <p class="step-desc">You receive polished, submission-ready content with revision rounds built in.</p>
+          <div class="step-title">You receive</div>
+          <p class="step-desc">Polished, submission-ready content with revisions built in. And a writer who was genuinely invested in it from the first word.</p>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-strip">
-      <h2>Ready to <em>get started?</em></h2>
-      <p>Tell Hilly what you need. She'll tell you how she can help.</p>
-      <a href="contact.html" class="btn">Start the conversation</a>
+      <h2>Your brand has a story.<br>Let Hilly help you <em>tell it properly.</em></h2>
+      <p>Whether you know exactly what you need or you are still figuring it out, she is happy to start the conversation.</p>
+      <a href="contact.html" class="btn">Get in touch</a>
+      <a href="portfolio.html" class="btn btn-rose">See her portfolio first</a>
     </section>
-
   </main>
 
   <footer>
@@ -615,19 +308,14 @@
     <ul class="footer-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
+      <li><a href="books.html">Books</a></li>
       <li><a href="portfolio.html">Portfolio</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </footer>
-
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
   </script>
 </body>
 </html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Hilly Wayenbam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #c9a0a0; --rose-light: #e8d0ce; --rose-deep: #a07878;
+      --parchment: #f7f0e8; --parchment-dark: #ede3d6;
+      --ink: #2c2420; --ink-light: #5c4c46;
+      --gold: #c8a96e; --cream: #faf6f0; --ember: #c45c3a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(247,240,232,0.88); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rose-light);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color .3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--rose-deep); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes sparkle { 0%,100%{opacity:.15;transform:scale(.8) rotate(0deg)} 50%{opacity:.9;transform:scale(1.3) rotate(20deg)} }
+    .fade-up { opacity:0; transform:translateY(32px); transition:opacity .75s ease,transform .75s ease; }
+    .fade-up.visible { opacity:1; transform:none; }
+
+    /* HERO */
+    .hero {
+      min-height: 60vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 10rem 4rem 5rem;
+      background: linear-gradient(155deg, #2c2420 0%, #3d2e28 30%, #4a3428 55%, var(--parchment-dark) 85%, var(--cream) 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-word {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(8rem,20vw,22rem);
+      font-weight: 300; color: rgba(201,160,160,.05);
+      white-space: nowrap; pointer-events: none; user-select: none;
+    }
+    .ember-glow {
+      position: absolute; bottom: 0; left: 15%; width: 40%; height: 60%;
+      background: radial-gradient(ellipse at bottom, rgba(196,92,58,.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .star { position: absolute; pointer-events: none; }
+    .hero-eyebrow { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--rose); margin-bottom:1.2rem; opacity:0; animation:fadeUp .8s .2s forwards; }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3.5rem,7vw,6.5rem); font-weight:300; line-height:1.05; color:var(--parchment); opacity:0; animation:fadeUp .9s .4s forwards; }
+    .hero-title em { font-style:italic; color:var(--rose); }
+    .hero-sub { margin-top:1.5rem; font-size:1rem; font-weight:300; line-height:1.8; color:rgba(247,240,232,.55); max-width:580px; opacity:0; animation:fadeUp .9s .65s forwards; }
+    main { position:relative; z-index:1; }
+
+    /* INTRO NOTE */
+    .blog-intro {
+      padding: 6rem 4rem;
+      max-width: 760px; margin: 0 auto;
+    }
+    .blog-intro p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.7rem); font-weight: 300;
+      line-height: 1.7; color: var(--ink-light); font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    .blog-intro p strong { font-weight: 500; color: var(--ink); font-style: normal; }
+    .blog-intro p em { color: var(--rose-deep); }
+    .blog-intro .sign {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;
+      font-weight: 400; color: var(--rose-deep); font-style: normal;
+      display: flex; align-items: center; gap: 0.8rem; margin-top: 0.5rem;
+    }
+    .blog-intro .sign::before { content: ''; width: 30px; height: 1px; background: var(--rose-deep); }
+
+    /* POSTS GRID */
+    .posts-section { padding: 2rem 4rem 8rem; }
+    .posts-header { display: flex; align-items: baseline; gap: 2rem; margin-bottom: 4rem; }
+    .posts-header h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem,3.5vw,2.5rem); font-weight: 300; color: var(--ink); }
+    .posts-header h2 em { font-style: italic; color: var(--rose-deep); }
+    .posts-header .divider { flex: 1; height: 1px; background: var(--rose-light); }
+
+    /* FEATURED POST */
+    .featured-post {
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: 0; margin-bottom: 4rem;
+      border: 1px solid var(--rose-light);
+      overflow: hidden; transition: border-color .4s;
+      text-decoration: none;
+    }
+    .featured-post:hover { border-color: var(--rose-deep); }
+    .featured-post-image {
+      aspect-ratio: auto; min-height: 380px;
+      background: linear-gradient(145deg, #1a1008, #2d1e10, #3d2818, #8b5a30);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .featured-post-image .img-placeholder {
+      text-align: center;
+    }
+    .featured-post-image .img-placeholder span { font-size: 3rem; color: rgba(201,160,160,.25); display: block; margin-bottom: .5rem; }
+    .featured-post-image .img-placeholder p { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(201,160,160,.3); }
+    .featured-post-body { padding: 4rem; background: var(--cream); display: flex; flex-direction: column; justify-content: center; }
+    .post-tag { font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--rose-deep); margin-bottom: 1.2rem; }
+    .post-tag.featured-tag { color: var(--ember); }
+    .featured-post-body h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 400; color: var(--ink); line-height: 1.2; margin-bottom: 1rem; }
+    .featured-post-body h2 em { font-style: italic; color: var(--rose-deep); }
+    .featured-post-body .excerpt { font-size: .95rem; line-height: 1.85; color: var(--ink-light); font-weight: 300; margin-bottom: 2rem; }
+    .post-meta { display: flex; align-items: center; gap: 1.5rem; }
+    .post-date { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-light); opacity: .6; }
+    .post-read { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--rose-deep); }
+
+    /* POSTS GRID */
+    .posts-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--rose-light);
+    }
+    .post-card {
+      background: var(--cream); padding: 3rem;
+      display: flex; flex-direction: column; gap: .8rem;
+      text-decoration: none; transition: background .3s;
+      position: relative; overflow: hidden;
+    }
+    .post-card::after { content:''; position:absolute; bottom:0;left:0;right:0;height:2px;background:var(--rose-deep);transform:scaleX(0);transform-origin:left;transition:transform .4s; }
+    .post-card:hover { background: var(--parchment); }
+    .post-card:hover::after { transform: scaleX(1); }
+    .post-card .post-tag { margin-bottom: .5rem; }
+    .post-card h3 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:400; color:var(--ink); line-height:1.3; }
+    .post-card h3 em { font-style:italic; color:var(--rose-deep); }
+    .post-card .excerpt { font-size:.85rem; line-height:1.8; color:var(--ink-light); font-weight:300; flex:1; }
+    .post-card .post-meta { margin-top:1rem; padding-top:1rem; border-top:1px solid var(--rose-light); }
+
+    /* COMING SOON CARD */
+    .post-card-soon {
+      background: var(--parchment-dark); padding: 3rem;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; gap: 1rem;
+      min-height: 260px;
+    }
+    .soon-icon { font-size: 2rem; color: var(--rose); opacity: .35; }
+    .soon-text { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 300; font-style: italic; color: var(--ink-light); line-height: 1.5; }
+
+    /* SUBSCRIBE STRIP */
+    .subscribe {
+      background: var(--ink); padding: 7rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .subscribe::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(196,92,58,.09) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .subscribe-inner { max-width: 640px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+    .subscribe-label { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:var(--rose); margin-bottom:1.5rem; }
+    .subscribe-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--parchment); line-height:1.2; margin-bottom:1rem; }
+    .subscribe-title em { font-style:italic; color:var(--rose); }
+    .subscribe-sub { font-size:.92rem; line-height:1.8; color:rgba(247,240,232,.45); font-weight:300; margin-bottom:3rem; }
+    .subscribe-form { display:flex; gap:0; max-width:440px; margin:0 auto; }
+    .subscribe-form input {
+      flex:1; font-family:'Jost',sans-serif; font-size:.88rem; font-weight:300;
+      color:var(--parchment); background:rgba(255,255,255,.06);
+      border:1px solid rgba(201,160,160,.2); border-right:none;
+      padding:.9rem 1.4rem; outline:none;
+      transition:border-color .3s;
+    }
+    .subscribe-form input::placeholder { color:rgba(247,240,232,.25); }
+    .subscribe-form input:focus { border-color:rgba(201,160,160,.5); }
+    .subscribe-form button {
+      padding:.9rem 2rem; font-family:'Jost',sans-serif; font-size:.72rem;
+      letter-spacing:.16em; text-transform:uppercase;
+      background:var(--rose-deep); color:var(--parchment);
+      border:1px solid var(--rose-deep); cursor:pointer; transition:background .3s;
+    }
+    .subscribe-form button:hover { background:var(--ember); border-color:var(--ember); }
+    .subscribe-note { font-size:.68rem; color:rgba(247,240,232,.25); margin-top:1rem; }
+
+    footer { background:var(--ink); padding:3rem 4rem; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(201,160,160,.06); }
+    footer .logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--parchment); }
+    footer p { font-size:.72rem; letter-spacing:.1em; color:rgba(247,240,232,.3); }
+    footer .footer-links { display:flex; gap:2rem; list-style:none; }
+    footer .footer-links a { font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(247,240,232,.4); text-decoration:none; transition:color .3s; }
+    footer .footer-links a:hover { color:var(--rose); }
+
+    @media(max-width:900px){
+      nav{padding:1.2rem 2rem;} .hero{padding:8rem 2rem 4rem;}
+      .blog-intro{padding:5rem 2rem;}
+      .posts-section{padding:2rem 2rem 5rem;}
+      .featured-post{grid-template-columns:1fr;}
+      .featured-post-image{min-height:240px;}
+      .featured-post-body{padding:2.5rem 2rem;}
+      .posts-grid{grid-template-columns:1fr 1fr;}
+      .subscribe{padding:5rem 2rem;}
+      footer{flex-direction:column;gap:1.5rem;text-align:center;padding:2.5rem 2rem;}
+    }
+    @media(max-width:600px){ .nav-links{display:none;} .posts-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">Hilly Wayenbam</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg-word">Thoughts</div>
+    <div class="ember-glow"></div>
+    <div class="star" style="top:22%;left:12%;animation:sparkle 3.4s infinite;"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c9a0a0" opacity="0.5"/></svg></div>
+    <div class="star" style="top:55%;right:14%;animation:sparkle 2.6s 1s infinite;"><svg width="10" height="10" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c8a96e" opacity="0.5"/></svg></div>
+    <p class="hero-eyebrow">Straight from my head</p>
+    <h1 class="hero-title">I write here<br>when I <em>cannot not.</em></h1>
+    <p class="hero-sub">Not a content strategy. Not a personal brand play. Just me, thinking out loud about writing, storytelling, life in Manipur, and everything else that refuses to stay quiet.</p>
+  </section>
+
+  <main>
+    <!-- INTRO NOTE IN HILLY'S VOICE -->
+    <div class="blog-intro">
+      <p class="fade-up">
+        I have been told I should have a content strategy for my own blog. A niche. A posting schedule. A target keyword.
+      </p>
+      <p class="fade-up">
+        I respectfully declined. <em>This space is mine.</em>
+      </p>
+      <p class="fade-up">
+        Here you will find whatever I was thinking about when the thought got too big to keep inside. Some posts will be about craft. Some will be about the chaos of writing a fantasy novel while also writing someone else's content calendar. Some will be about my cat. Some will be about growing up in a place that does not always show up on the map but has always shown up in my writing.
+      </p>
+      <p class="fade-up">
+        <strong>There are no categories here. There is just me.</strong> If that is the kind of writing you like to read, welcome. Pull up a chair. I am glad you found this corner.
+      </p>
+      <p class="fade-up sign">Hilly</p>
+    </div>
+
+    <section class="posts-section">
+      <div class="posts-header">
+        <h2 class="fade-up">Recent <em>posts</em></h2>
+        <div class="divider"></div>
+      </div>
+
+      <!-- FEATURED POST — replace with first real post -->
+      <a href="#" class="featured-post fade-up">
+        <div class="featured-post-image">
+          <div class="img-placeholder">
+            <span>✦</span>
+            <p>Add cover image</p>
+          </div>
+        </div>
+        <div class="featured-post-body">
+          <p class="post-tag featured-tag">✦ Latest post</p>
+          <h2>The thing nobody tells you about writing your first novel while freelancing full time</h2>
+          <p class="excerpt">You think the hard part is the words. It is not. The hard part is deciding, every single day, which version of yourself gets the desk. The one who pays the bills or the one who stays up too late falling in love with a character who does not technically exist yet.</p>
+          <div class="post-meta">
+            <span class="post-date">Add your date here</span>
+            <span class="post-read">5 min read</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- POSTS GRID -->
+      <div class="posts-grid">
+
+        <a href="#" class="post-card fade-up">
+          <p class="post-tag">On writing</p>
+          <h3>Why I stopped calling myself <em>just a content writer</em></h3>
+          <p class="excerpt">The word "just" has no business being anywhere near what we do. I stopped using it and something shifted. Here is what changed and what I wish I had figured out sooner.</p>
+          <div class="post-meta">
+            <span class="post-date">Add date</span>
+            <span class="post-read">4 min read</span>
+          </div>
+        </a>
+
+        <a href="#" class="post-card fade-up">
+          <p class="post-tag">On storytelling</p>
+          <h3>Every brand is a character. Most of them just have terrible <em>backstories.</em></h3>
+          <p class="excerpt">I spend a lot of time thinking about why some brands feel alive and others feel like they were assembled from a template. The difference, almost always, is the same thing that separates a forgettable character from one you think about for years.</p>
+          <div class="post-meta">
+            <span class="post-date">Add date</span>
+            <span class="post-read">6 min read</span>
+          </div>
+        </a>
+
+        <a href="#" class="post-card fade-up">
+          <p class="post-tag">On Manipur</p>
+          <h3>What growing up in the Northeast taught me about <em>finding the detail</em></h3>
+          <p class="excerpt">Nobody asked me to write about where I come from. But it shows up in everything I write anyway. The specificity. The layering. The refusal to flatten something complex into something easy. I think that is Manipur in me.</p>
+          <div class="post-meta">
+            <span class="post-date">Add date</span>
+            <span class="post-read">7 min read</span>
+          </div>
+        </a>
+
+        <a href="#" class="post-card fade-up">
+          <p class="post-tag">On books</p>
+          <h3>Why I write romance that does not let the characters off easy</h3>
+          <p class="excerpt">Love in fiction gets to be complicated. I am tired of stories where the only thing standing between two people is a misunderstanding that could be solved in one conversation. My characters earn their endings. Every single one.</p>
+          <div class="post-meta">
+            <span class="post-date">Add date</span>
+            <span class="post-read">5 min read</span>
+          </div>
+        </a>
+
+        <a href="#" class="post-card fade-up">
+          <p class="post-tag">On craft</p>
+          <h3>The sentence that taught me everything I know about <em>writing for people</em></h3>
+          <p class="excerpt">I read it years ago. I do not remember where. But I have been writing toward it ever since. It had twelve words and it rearranged the way I understand what a sentence is for.</p>
+          <div class="post-meta">
+            <span class="post-date">Add date</span>
+            <span class="post-read">3 min read</span>
+          </div>
+        </a>
+
+        <div class="post-card-soon fade-up">
+          <div class="soon-icon">✦</div>
+          <p class="soon-text">More posts are living inside my notebook right now. They will find their way here when they are ready to be read.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SUBSCRIBE -->
+    <section class="subscribe">
+      <div class="subscribe-inner">
+        <p class="subscribe-label fade-up">Stay in the loop</p>
+        <h2 class="subscribe-title fade-up">New posts land here<br>before they go <em>anywhere else.</em></h2>
+        <p class="subscribe-sub fade-up">No newsletter cadence. No content calendar. Just a note when I have written something I actually want you to read.</p>
+        <form class="subscribe-form fade-up" onsubmit="return false;">
+          <input type="email" placeholder="Your email address" />
+          <button type="submit">Subscribe</button>
+        </form>
+        <p class="subscribe-note fade-up">No spam. Unsubscribe whenever. I mean it.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="logo">HW</div>
+    <p>© 2025 Hilly Wayenbam. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </footer>
+  <script>
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.08});
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

@@ -13,3 +13,8 @@
   object-fit: cover;
   display: block;
 }
+.book-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

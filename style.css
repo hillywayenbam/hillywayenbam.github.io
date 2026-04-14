@@ -1,3 +1,18 @@
+.book-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.book-cover img {
+  width: 220px;
+  height: 320px;
+  object-fit: cover;
+}
+
+.book-content {
+  max-width: 600px;
+}
 .book-cover img {
   width: 220px;
   height: 320px;

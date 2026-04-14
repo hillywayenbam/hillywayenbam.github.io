@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Books — Hilly Wayenbam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #c9a0a0; --rose-light: #e8d0ce; --rose-deep: #a07878;
+      --parchment: #f7f0e8; --parchment-dark: #ede3d6;
+      --ink: #2c2420; --ink-light: #5c4c46;
+      --gold: #c8a96e; --gold-pale: #e8d8b8; --cream: #faf6f0; --ember: #c45c3a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(247,240,232,0.88); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rose-light);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color .3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--rose-deep); }
+
+    /* HERO */
+    .hero {
+      min-height: 62vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 10rem 4rem 5rem;
+      background: linear-gradient(150deg, #1e1814 0%, #2c2420 30%, #4a3428 55%, var(--parchment-dark) 85%, var(--cream) 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(7rem, 18vw, 20rem);
+      font-weight: 300; color: rgba(201,160,160,0.05); white-space: nowrap;
+      pointer-events: none; user-select: none;
+    }
+    .hero-ember {
+      position: absolute; bottom: 0; right: 10%; width: 50%; height: 70%;
+      background: radial-gradient(ellipse at bottom right, rgba(196,92,58,.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .star { position: absolute; pointer-events: none; }
+    @keyframes sparkle { 0%,100%{opacity:.2;transform:scale(.8) rotate(0deg)} 50%{opacity:1;transform:scale(1.3) rotate(18deg)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    .hero-eyebrow { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--rose); margin-bottom:1.2rem; opacity:0; animation:fadeUp .8s .2s forwards; }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3.5rem,7vw,6.5rem); font-weight:300; line-height:1.05; color:var(--parchment); opacity:0; animation:fadeUp .9s .4s forwards; }
+    .hero-title em { font-style:italic; color:var(--rose); }
+    .hero-sub { margin-top:1.5rem; font-size:1rem; font-weight:300; line-height:1.8; color:rgba(247,240,232,.55); max-width:560px; opacity:0; animation:fadeUp .9s .65s forwards; }
+    main { position:relative; z-index:1; }
+    .fade-up { opacity:0; transform:translateY(32px); transition:opacity .75s ease,transform .75s ease; }
+    .fade-up.visible { opacity:1; transform:none; }
+
+    /* OPENING COPY */
+    .opening {
+      padding: 7rem 4rem;
+      max-width: 860px; margin: 0 auto; text-align: center;
+    }
+    .opening p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem); font-weight: 300;
+      line-height: 1.65; color: var(--ink-light); font-style: italic;
+    }
+    .opening p strong { font-weight: 500; color: var(--ink); font-style: normal; }
+
+    /* BOOK ENTRIES */
+    .books-section { padding: 0 4rem 8rem; }
+
+    .book-entry {
+      display: grid; grid-template-columns: 280px 1fr;
+      gap: 6rem; padding: 6rem 0;
+      border-top: 1px solid var(--rose-light);
+      align-items: start;
+    }
+    .book-entry:last-child { border-bottom: 1px solid var(--rose-light); }
+
+    /* BOOK COVER */
+    .book-cover {
+      position: sticky; top: 8rem;
+    }
+    .book-cover-art {
+      aspect-ratio: 2/3; position: relative; overflow: hidden;
+      box-shadow: 12px 12px 40px rgba(44,36,32,.18);
+    }
+    .cover-bg {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.2rem; padding: 2rem;
+      text-align: center; position: relative;
+    }
+    .cover-bg::after {
+      content: ''; position: absolute; inset: 0;
+      border: 1px solid rgba(255,255,255,.1); pointer-events: none;
+    }
+    /* Unique gradient per book */
+    .cover-serpent { background: linear-gradient(155deg, #1a0e12 0%, #2d1420 40%, #8b4a5c 75%, #c9a0a0 100%); }
+    .cover-ctrlz    { background: linear-gradient(145deg, #0f1e2a 0%, #1a3040 45%, #4a7898 80%, #a0c8d8 100%); }
+    .cover-starcrossed { background: linear-gradient(160deg, #1a1408 0%, #2d2010 40%, #8b6a20 75%, #c8a96e 100%); }
+    .cover-cat      { background: linear-gradient(140deg, #0e1a10 0%, #1a2e1c 45%, #4a7850 80%, #a0c8a8 100%); }
+    .cover-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400;
+      color: rgba(247,240,232,.9); line-height: 1.3; letter-spacing: 0.04em;
+    }
+    .cover-author { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(247,240,232,.5); }
+    .cover-star { font-size: 1.5rem; color: rgba(201,160,160,.6); }
+    .book-status-badge {
+      display: inline-block; margin-top: 1.2rem;
+      padding: .4rem 1rem; font-size: .65rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      border: 1px solid var(--rose-light); color: var(--rose-deep);
+      background: transparent;
+    }
+    .badge-wip { border-color: var(--gold); color: var(--gold); }
+
+    /* BOOK DETAILS */
+    .book-details {}
+    .book-genre-tag {
+      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--rose-deep); margin-bottom: 1rem; display: block;
+    }
+    .book-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400;
+      color: var(--ink); line-height: 1.1; margin-bottom: .5rem;
+    }
+    .book-title em { font-style: italic; color: var(--rose-deep); }
+    .book-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 300; font-style: italic;
+      color: var(--ink-light); margin-bottom: 2.5rem;
+    }
+    .book-description {
+      font-size: .97rem; line-height: 1.9; color: var(--ink-light);
+      font-weight: 300; margin-bottom: 1.5rem;
+    }
+    .book-description strong { color: var(--ink); font-weight: 500; }
+    .book-description em { font-style: italic; color: var(--rose-deep); }
+
+    .book-hook {
+      margin: 2rem 0; padding: 1.8rem 2rem; border-left: 2px solid var(--rose-deep);
+      background: linear-gradient(to right, rgba(232,208,206,.2), transparent);
+    }
+    .book-hook p {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+      font-weight: 300; font-style: italic; color: var(--ink); line-height: 1.4; margin: 0;
+    }
+
+    .book-tags {
+      display: flex; flex-wrap: wrap; gap: .5rem; margin: 2rem 0;
+    }
+    .tag {
+      padding: .35rem 1rem; font-size: .65rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      border: 1px solid var(--rose-light); color: var(--ink-light);
+    }
+    .book-cta { margin-top: 2.5rem; }
+
+    .btn { display:inline-block; padding:1rem 2.8rem; font-family:'Jost',sans-serif; font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); color:var(--ink); background:transparent; transition:background .3s,color .3s; cursor:pointer; margin:.4rem 0; }
+    .btn:hover { background:var(--ink); color:var(--parchment); }
+    .btn-rose { border-color:var(--rose-deep); color:var(--rose-deep); }
+    .btn-rose:hover { background:var(--rose-deep); color:var(--parchment); }
+    .btn-ghost { border-color:var(--rose-light); color:var(--ink-light); }
+    .btn-ghost:hover { border-color:var(--rose-deep); color:var(--rose-deep); background:transparent; }
+
+    /* READING STRIP */
+    .reading-strip {
+      background: var(--ink); padding: 7rem 4rem; position: relative; overflow: hidden;
+    }
+    .reading-strip::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(196,92,58,.08) 0%, transparent 60%); pointer-events: none;
+    }
+    .reading-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .reading-label { font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; color:var(--rose); margin-bottom:1.5rem; }
+    .reading-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:300; color:var(--parchment); line-height:1.2; margin-bottom:1.5rem; }
+    .reading-title em { font-style:italic; color:var(--rose); }
+    .reading-body { font-size:.97rem; line-height:1.9; color:rgba(247,240,232,.5); font-weight:300; max-width:680px; margin-bottom:2.5rem; }
+
+    /* CTA */
+    .cta-strip { padding:7rem 4rem; text-align:center; background:linear-gradient(160deg,var(--rose-light) 0%,var(--parchment) 60%,var(--cream) 100%); }
+    .cta-strip h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4.5vw,3.5rem); font-weight:300; color:var(--ink); margin-bottom:1rem; line-height:1.2; }
+    .cta-strip h2 em { font-style:italic; color:var(--rose-deep); }
+    .cta-strip p { font-size:1rem; color:var(--ink-light); font-weight:300; margin-bottom:2.5rem; line-height:1.7; }
+
+    footer { background:var(--ink); padding:3rem 4rem; display:flex; justify-content:space-between; align-items:center; }
+    footer .logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--parchment); }
+    footer p { font-size:.72rem; letter-spacing:.1em; color:rgba(247,240,232,.35); }
+    footer .footer-links { display:flex; gap:2rem; list-style:none; }
+    footer .footer-links a { font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(247,240,232,.45); text-decoration:none; transition:color .3s; }
+    footer .footer-links a:hover { color:var(--rose); }
+
+    @media(max-width:900px){
+      nav{padding:1.2rem 2rem;} .hero{padding:8rem 2rem 4rem;}
+      .opening{padding:5rem 2rem;}
+      .books-section{padding:0 2rem 5rem;}
+      .book-entry{grid-template-columns:1fr;gap:3rem;padding:4rem 0;}
+      .book-cover{position:static;} .book-cover-art{max-width:220px;}
+      .reading-strip{padding:5rem 2rem;} .cta-strip{padding:5rem 2rem;}
+      footer{flex-direction:column;gap:1.5rem;text-align:center;padding:2.5rem 2rem;}
+    }
+    @media(max-width:600px){ .nav-links{display:none;} }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">Hilly Wayenbam</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="books.html" class="active">Books</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg-text">Books</div>
+    <div class="hero-ember"></div>
+    <div class="star" style="top:22%;left:12%;animation:sparkle 3.4s infinite;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c9a0a0" opacity="0.5"/></svg></div>
+    <div class="star" style="top:55%;right:18%;animation:sparkle 2.6s 1s infinite;"><svg width="10" height="10" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c8a96e" opacity="0.5"/></svg></div>
+    <div class="star" style="top:35%;right:8%;animation:sparkle 4s 0.4s infinite;"><svg width="8" height="8" viewBox="0 0 24 24"><path d="M12 2 L13.5 9.5 L21 11 L13.5 12.5 L12 20 L10.5 12.5 L3 11 L10.5 9.5 Z" fill="#c9a0a0" opacity="0.4"/></svg></div>
+    <p class="hero-eyebrow">Written by Hilly Wayenbam</p>
+    <h1 class="hero-title">Worlds she built<br>from the <em>inside out.</em></h1>
+    <p class="hero-sub">Every book here started as a feeling she could not shake. A question she could not stop asking. A character who simply refused to stay quiet.</p>
+  </section>
+
+  <main>
+    <div class="opening">
+      <p class="fade-up">Hilly does not write to fill pages. She writes because <strong>some stories choose their author</strong> and then simply wait, patient as old gods, until she sits down and lets them through.</p>
+    </div>
+
+    <section class="books-section">
+
+      <!-- BOOK 1 -->
+      <div class="book-entry">
+        <div class="book-cover fade-up">
+          <div class="book-cover-art">
+            <div class="cover-bg cover-serpent">
+              <span class="cover-star">✦</span>
+              <div class="cover-title">The Bride of The Serpent God</div>
+              <div class="cover-author">Hilly Wayenbam</div>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <span class="book-status-badge badge-wip">Work in Progress</span>
+          </div>
+        </div>
+        <div class="book-details fade-up">
+          <span class="book-genre-tag">Fantasy Novel</span>
+          <h2 class="book-title">The Bride of the <em>Serpent God</em></h2>
+          <p class="book-subtitle">She was sent to be a bride. She arrived as something else entirely.</p>
+          <p class="book-description">
+            A goddess does not choose a political marriage. She is chosen for one. Dressed in ceremony, bound in obligation, and handed over to a Demon Lord like a gift no one actually wants to give. That is where this story begins. Not with a wedding. With a woman arriving at someone else's kingdom and quietly, stubbornly, <strong>refusing to disappear into the role they gave her.</strong>
+          </p>
+          <div class="book-hook">
+            <p>She came to seal a peace treaty. She stayed because somewhere between the thorns and the silence, she started finding out who she was when nobody was watching.</p>
+          </div>
+          <p class="book-description">
+            This is a fantasy novel built from the bones of Northeast Indian folklore and the very human ache of becoming yourself in a world that already decided what you should be. There is political tension sharp enough to cut. There is a relationship that starts as an arrangement and grows into something neither of them planned for. And there is a goddess who realises, slowly and then all at once, that <em>finding yourself is the most dangerous thing you can do in a world that prefers you obedient.</em>
+          </p>
+          <div class="book-tags">
+            <span class="tag">Forced marriage</span>
+            <span class="tag">Fantasy romance</span>
+            <span class="tag">Self discovery</span>
+            <span class="tag">Political intrigue</span>
+            <span class="tag">Folklore inspired</span>
+          </div>
+          <div class="book-cta">
+            <a href="contact.html" class="btn btn-rose">Stay updated on this book</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOK 2 -->
+      <div class="book-entry">
+        <div class="book-cover fade-up">
+          <div class="book-cover-art">
+            <div class="cover-bg cover-ctrlz">
+              <span class="cover-star">◎</span>
+              <div class="cover-title">Just Press Ctrl Z</div>
+              <div class="cover-author">Hilly Wayenbam</div>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <span class="book-status-badge badge-wip">Work in Progress</span>
+          </div>
+        </div>
+        <div class="book-details fade-up">
+          <span class="book-genre-tag">Campus Romance</span>
+          <h2 class="book-title">Just Press <em>Ctrl Z</em></h2>
+          <p class="book-subtitle">One misunderstanding. One stubborn man. One very long journey to the truth.</p>
+          <p class="book-description">
+            There is a girl. There is a boy who thinks she is also a boy. There is a campus full of people watching, a man carrying a particular brand of fear he has not yet examined, and a story that decided it was not going to take the easy road. Not even once.
+          </p>
+          <div class="book-hook">
+            <p>He built a wall out of everything he did not understand about himself. She walked in through a gap he did not even know was there.</p>
+          </div>
+          <p class="book-description">
+            This is a campus romance with a twist that is also not really a twist because life has always been this complicated and this tender and this funny all at once. It is a story about a man confronting homophobia and discovering, somewhere in that confrontation, that <strong>the person he was most afraid of understanding was himself.</strong> It is about love arriving through the strangest door. It is about the courage it takes to undo what you thought you knew and start over. <em>It is about growth that is messy and real and worth every uncomfortable step.</em>
+          </p>
+          <div class="book-tags">
+            <span class="tag">Campus life</span>
+            <span class="tag">Identity</span>
+            <span class="tag">Slow burn</span>
+            <span class="tag">Homophobia explored</span>
+            <span class="tag">Found understanding</span>
+          </div>
+          <div class="book-cta">
+            <a href="contact.html" class="btn btn-rose">Stay updated on this book</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOK 3 -->
+      <div class="book-entry">
+        <div class="book-cover fade-up">
+          <div class="book-cover-art">
+            <div class="cover-bg cover-starcrossed">
+              <span class="cover-star">★</span>
+              <div class="cover-title">Star-crossed: A Game of Fate</div>
+              <div class="cover-author">Hilly Wayenbam</div>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <span class="book-status-badge badge-wip">Work in Progress</span>
+          </div>
+        </div>
+        <div class="book-details fade-up">
+          <span class="book-genre-tag">Coming of Age Romance</span>
+          <h2 class="book-title">Star-crossed:<br><em>A Game of Fate</em></h2>
+          <p class="book-subtitle">Fate gave him nothing to start with. He built something anyway.</p>
+          <p class="book-description">
+            Nineteen years old. A delinquent reputation nobody invited but everyone decided to define him by. And then one day, walking back into his life like she had simply taken a very long detour, his childhood sweetheart. The one he forgot. Or tried to. Or maybe never actually could.
+          </p>
+          <div class="book-hook">
+            <p>Fate does not warn you before it moves the pieces. It just watches to see if you are brave enough to play.</p>
+          </div>
+          <p class="book-description">
+            This is a coming of age story about what it means to want something desperately when life has given you every reason to stop wanting things. It is about a boy who has been handed nothing and still, stubbornly, <strong>refuses to believe that nothing is all there is.</strong> It is about the girl who comes back and the game of fate they get tangled in together. About hardship that does not soften you but sharpens you. About dreams that survive in people who have no business still having them. <em>And about love that shows up not when you are ready, but exactly when you need it most.</em>
+          </p>
+          <div class="book-tags">
+            <span class="tag">Coming of age</span>
+            <span class="tag">Second chance</span>
+            <span class="tag">Childhood sweethearts</span>
+            <span class="tag">Dreams and hardship</span>
+            <span class="tag">Enemies to lovers</span>
+          </div>
+          <div class="book-cta">
+            <a href="contact.html" class="btn btn-rose">Stay updated on this book</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOK 4 -->
+      <div class="book-entry">
+        <div class="book-cover fade-up">
+          <div class="book-cover-art">
+            <div class="cover-bg cover-cat">
+              <span class="cover-star">♡</span>
+              <div class="cover-title">How My Cat Survived FPV</div>
+              <div class="cover-author">Hilly Wayenbam</div>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <span class="book-status-badge">Published / Available</span>
+          </div>
+        </div>
+        <div class="book-details fade-up">
+          <span class="book-genre-tag">Non-Fiction Guide &nbsp;·&nbsp; Ebook</span>
+          <h2 class="book-title">How My Cat <em>Survived FPV</em></h2>
+          <p class="book-subtitle">A real story. Real fear. And the things she learned along the way that she wishes someone had told her first.</p>
+          <p class="book-description">
+            Feline Panleukopenia Virus is one of the scariest things a cat owner can face. The information online is either too clinical to feel human or too vague to actually help. Hilly sat in the middle of that fear with her own cat, and she came out the other side with something better than a medical fact sheet.
+          </p>
+          <div class="book-hook">
+            <p>She did not write this as a vet. She wrote it as someone who cried on a bathroom floor at 2am and then figured out what to do next.</p>
+          </div>
+          <p class="book-description">
+            This short ebook is the guide she desperately needed and could not find. It is her cat's story from the terrifying beginning to the moment things started turning around. It is practical tips, real precautions, the things nobody warns you about, and the quiet wisdom that comes from loving an animal through the worst and <strong>watching them choose to stay.</strong> It is not a medical book. It will not replace your vet. But it will make you feel <em>a great deal less alone</em> in one of the loneliest situations a pet owner can find themselves in.
+          </p>
+          <div class="book-tags">
+            <span class="tag">Pet care</span>
+            <span class="tag">FPV recovery</span>
+            <span class="tag">Cat health</span>
+            <span class="tag">Personal story</span>
+            <span class="tag">Practical guide</span>
+          </div>
+          <div class="book-cta">
+            <a href="#" class="btn btn-rose">Get the ebook</a>
+            <a href="contact.html" class="btn btn-ghost" style="margin-left:.5rem;">Ask Hilly about it</a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- READING STRIP -->
+    <section class="reading-strip">
+      <div class="reading-inner">
+        <p class="reading-label fade-up">A note from the author</p>
+        <h2 class="reading-title fade-up">She writes the books <em>she needed</em><br>and could not find.</h2>
+        <p class="reading-body fade-up">Every story here comes from a question she could not leave unanswered. A character she met in a dream and could not stop thinking about. A real experience so big it needed to become something other people could hold. She does not write to a formula. She writes until the story feels like it was always supposed to exist. And then she writes it again until it actually does.</p>
+        <a href="contact.html" class="btn btn-rose fade-up" style="border-color:var(--rose);color:var(--rose);">Get notified when new books drop</a>
+      </div>
+    </section>
+
+    <section class="cta-strip">
+      <h2>Love how she tells a story?<br>Imagine what she can do <em>with yours.</em></h2>
+      <p>Hilly brings the same depth, intention, and craft to her client work as she does to her own fiction. The worlds are different. The commitment never is.</p>
+      <a href="services.html" class="btn">See her services</a>
+      <a href="contact.html" class="btn btn-rose" style="margin-left:.5rem;">Work with her</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="logo">HW</div>
+    <p>© 2025 Hilly Wayenbam. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </footer>
+  <script>
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.08});
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
